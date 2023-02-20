@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data.OleDb;
 
 namespace ADO_WPF_HomeWork_app
 {
@@ -20,9 +22,13 @@ namespace ADO_WPF_HomeWork_app
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SqlDataAdapter sqlAdapter;
+        private OleDbDataAdapter
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        
     }
 }

@@ -6,20 +6,22 @@
         xmlns:local="clr-namespace:ADO_WPF_HomeWork_app"
         mc:Ignorable="d"
         Title="MainWindow" Height="493" Width="812">
-    <Grid>
+    <Grid Margin="0,0,0,-6">
         <Grid.ColumnDefinitions >
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="26*"></RowDefinition>
+            <RowDefinition Height="31"></RowDefinition>
+            <RowDefinition Height="271*"></RowDefinition>
+            <RowDefinition Height="149*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label Content="БАЗА 1" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" ></Label>
-        <DataGrid HorizontalAlignment="Center"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,5,0,0" Grid.Row="1"/>
+        <Label Content="БАЗА 1" Grid.Row="2" HorizontalAlignment="Center" Margin="0,1,0,212" Width="48" />
+        <DataGrid x:Name="CustumersGrid" Grid.Column="0" Grid.Row="2"  d:ItemsSource="{Binding}" />
+        <DataGrid x:Name="OrdersGrid"  Grid.Column="1" Grid.Row="2" d:ItemsSource="{Binding}"/>
 
     </Grid>
 </Window>
