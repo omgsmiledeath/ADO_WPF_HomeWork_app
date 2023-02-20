@@ -21,7 +21,18 @@
 
         <Label Content="БАЗА 1" Grid.Row="2" HorizontalAlignment="Center" Margin="0,1,0,212" Width="48" />
         <DataGrid x:Name="CustumersGrid" Grid.Column="0" Grid.Row="2"  d:ItemsSource="{Binding}" />
-        <DataGrid x:Name="OrdersGrid"  Grid.Column="1" Grid.Row="2" d:ItemsSource="{Binding}"/>
+        <DataGrid x:Name="OrdersGrid"  Grid.Column="1" Grid.Row="2" d:ItemsSource="{Binding}"
+                  IsSynchronizedWithCurrentItem="True" SelectionMode="Single"
+                  AutoGenerateColumns="False" IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="id" Binding="{Binding id}" Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="email" Binding="{Binding email}" Header="EMAIL" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productId" Binding="{Binding productId}" Header="Product ID" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productDescription" Binding="{Binding productDescription}" Header="Product Description" IsReadOnly="False"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Connect to Access" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" 
+                VerticalAlignment="Center" Height="78" Width="150" Click="Button_Click"/>
 
     </Grid>
 </Window>
