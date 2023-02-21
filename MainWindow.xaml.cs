@@ -58,8 +58,17 @@ namespace ADO_WPF_HomeWork_app
             }
             oleDBVM.Update();
         }
-
-        
+            private void mssqlAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dr = mssqlDBVM.CustumersDt.NewRow();
+            AddRecord ar = new AddRecord(dr);
+            ar.ShowDialog();
+            if (ar.DialogResult == true)
+            {
+                mssqlDBVM.CustumersDt.Rows.Add(dr);
+            }
+            mssqlDBVM.Update();
+        }
 
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -96,7 +105,7 @@ namespace ADO_WPF_HomeWork_app
             if (dr != null)
             {
                 dr.EndEdit();
-               // UPDATE MSSQLDATAADAPTER
+                mssqlDBVM.Update();
             }
         }
 
@@ -114,7 +123,7 @@ namespace ADO_WPF_HomeWork_app
             if (CustumersGrid.SelectedItem != null)
             {
                 (CustumersGrid.SelectedItem as DataRowView).Row.Delete();
-                // UPDATE MSSQLDATAADAPTER
+                mssqlDBVM.Update();
             }
             else MessageBox.Show("Select row for delete");
         }

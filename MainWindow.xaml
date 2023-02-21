@@ -95,6 +95,7 @@
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0">
             <Button x:Name="mssqlConButton" Content="Connect to MSSQL" Click ="mssqlConButton_Click"/>
+            <Button x:Name="mssqlAddButton" Content="ADD new Custumer" Click="mssqlAddButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

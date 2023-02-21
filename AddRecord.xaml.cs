@@ -25,23 +25,27 @@ namespace ADO_WPF_HomeWork_app
         DataRow OleDbDR =null;
         DataRow MSSQLDR = null;
         bool isMSSQL, isOleDB = false;
+        
         public AddRecord()
         {
             InitializeComponent();
+            CustumerPanel.Visibility = Visibility.Collapsed;
+            OrdersPanel.Visibility = Visibility.Collapsed;
         }
         public AddRecord(DataRow dr):this()
         {
-            switch (dr.Table.Rows.Count)
+            
+            switch (dr.Table.Columns.Count)
             {
                 case 4:
                     this.OleDbDR = dr;
                     OrdersPanel.Visibility =  Visibility.Visible;
-                    CustumerPanel.Visibility = Visibility.Collapsed;
+                    
                     isOleDB = true;
                     break;
                 case 6:
                     this.MSSQLDR = dr;
-                    OrdersPanel.Visibility = Visibility.Collapsed;
+                    
                     CustumerPanel.Visibility = Visibility.Visible;
                     isMSSQL = true;
                     break;
@@ -97,7 +101,7 @@ namespace ADO_WPF_HomeWork_app
         }
         private bool CheckMSSQLDBboxes()
         {
-            if (!isOleDB) return false;
+            if (isOleDB) return false;
             if (!String.IsNullOrWhiteSpace(firstNameTxt.Text) && 
                 !String.IsNullOrWhiteSpace(lastNameTxt.Text) && 
                 !String.IsNullOrWhiteSpace(midleNameTxt.Text)&&
