@@ -16,7 +16,7 @@ using System.Data.SqlClient;
 using System.Data.OleDb;
 using System.Data;
 using System.Runtime.CompilerServices;
-
+using ADO_WPF_HomeWork_app.ViewModels;
 
 namespace ADO_WPF_HomeWork_app
 {
@@ -26,65 +26,108 @@ namespace ADO_WPF_HomeWork_app
     public partial class MainWindow : Window
     {
         #region Переменные
-        bool isConnectedToAccess;
-        bool isConnectedToSql;
-        private SqlDataAdapter sqlAdapter = new SqlDataAdapter();
-        private SqlConnection sqlCon=new SqlConnection();
-        private OleDbDataAdapter OleDbAdapter = new OleDbDataAdapter();
-        private OleDbConnection oleDbCon = new OleDbConnection();
-        private DataTable custumersDt = new DataTable();
-        private DataTable ordersDt = new DataTable();
+        DataRowView dr;
+        OleDBViewModel oleDBVM;
+        MSSQLDBViewMode mssqlDBVM;
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
+            oleDBVM = new OleDBViewModel();
+            OrdersGrid.DataContext = oleDBVM.OrdersDt;
+            mssqlDBVM = new MSSQLDBViewMode();
+            CustumersGrid.DataContext = mssqlDBVM.CustumersDt;
+        }
+
+       
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await oleDBVM.ConnectToAccess("");
+        }
+
+        private void btnUpdateOleDB_Click(object sender, RoutedEventArgs e)
+        {
+            var dr = oleDBVM.OrdersDt.NewRow();
+            AddRecord ar = new AddRecord(dr);
+            ar.ShowDialog();
+            if (ar.DialogResult == true)
+            {
+                oleDBVM.OrdersDt.Rows.Add(dr);
+            }
+            oleDBVM.Update();
+        }
+
+        
+
+        private void DeleteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (OrdersGrid.SelectedItem != null)
+            {
+                (OrdersGrid.SelectedItem as DataRowView).Row.Delete();
+                oleDBVM.Update();
+            }
+            else MessageBox.Show("Select row for delete");
+        }
+
+        private void OrdersGrid_CurrentCellChanged(object sender, EventArgs e)
+        {
+            if (dr != null)
+            {
+                dr.EndEdit();
+                oleDBVM.Update();
+            }
+        }
+
+        private void OrdersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
             
+
+            if (OrdersGrid.SelectedItem != null)
+            {
+                dr = (DataRowView)OrdersGrid.SelectedItem;
+                dr.BeginEdit();
+            }
         }
 
-        public bool ConnectToAccess (string path)
+        private void CustumersGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-            var OleDBStringBuilder = new OleDbConnectionStringBuilder();
-            OleDBStringBuilder.DataSource = @"D:\OrdersBase.accdb;DataBase Password = '123'";
-            OleDBStringBuilder.Provider = "Microsoft.ACE.OLEDB.12.0";
-           
-
-
-            oleDbCon.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source = D:\\OrdersBase.accdb; Jet OLEDB:DataBase Password = '123'";
-            try
+            if (dr != null)
             {
-                oleDbCon.Open();
-                if(oleDbCon.State==ConnectionState.Open) 
-                {
-                    MessageBox.Show("Connection to Access base is ok");
-                    isConnectedToAccess= true;
-                   
-                    
-                    var scom = new OleDbCommand("SELECT * FROM Orders");
-                    OleDbAdapter = new OleDbDataAdapter("SELECT * FROM Orders", oleDbCon);
-                    OleDbAdapter.Fill(ordersDt);
-                    OrdersGrid.ItemsSource = ordersDt.DefaultView;
-                    //var com = new OleDbCommand(@"INSERT INTO Orders (email,productId,productDescription)
-                    //                             VALUES('1@1.ru',2,'чтото');", oleDbCon);
-                    //com.ExecuteNonQuery();
-                }
-                else
-                {
-                    MessageBox.Show("Connection to Access base its not ok");
-                    isConnectedToAccess = false;
-                }
+                dr.EndEdit();
+               // UPDATE MSSQLDATAADAPTER
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show($"{ex.Message}", "ERROR");
-                isConnectedToAccess = false;
-            }
-                        return isConnectedToAccess;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CustumersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            ConnectToAccess("");
+            if (CustumersGrid.SelectedItem != null)
+            {
+                dr = (DataRowView)CustumersGrid.SelectedItem;
+                dr.BeginEdit();
+            }
+        }
+
+        private void CustumersDeleteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (CustumersGrid.SelectedItem != null)
+            {
+                (CustumersGrid.SelectedItem as DataRowView).Row.Delete();
+                // UPDATE MSSQLDATAADAPTER
+            }
+            else MessageBox.Show("Select row for delete");
+        }
+
+        private async void mssqlConButton_Click(object sender, RoutedEventArgs e)
+        {
+            var conStr = new SqlConnectionStringBuilder()
+            {
+                DataSource = @"(localdb)\MSSQLLocalDB",
+                InitialCatalog = "ADO_WPF_HomeWork_base",
+                IntegratedSecurity= true
+            };
+            await mssqlDBVM.ConnectToSQL(conStr.ConnectionString);
         }
     }
 }

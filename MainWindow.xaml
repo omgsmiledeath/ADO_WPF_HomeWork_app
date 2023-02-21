@@ -19,20 +19,82 @@
             <RowDefinition Height="149*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label Content="БАЗА 1" Grid.Row="2" HorizontalAlignment="Center" Margin="0,1,0,212" Width="48" />
-        <DataGrid x:Name="CustumersGrid" Grid.Column="0" Grid.Row="2"  d:ItemsSource="{Binding}" />
-        <DataGrid x:Name="OrdersGrid"  Grid.Column="1" Grid.Row="2" d:ItemsSource="{Binding}"
-                  IsSynchronizedWithCurrentItem="True" SelectionMode="Single"
-                  AutoGenerateColumns="False" IsReadOnly="False">
+        <Label Content="БАЗА 1" Grid.Row="2"
+               HorizontalAlignment="Center" 
+               Margin="0,1,0,212" Width="48" />
+        <DataGrid x:Name="CustumersGrid" 
+                  Grid.Column="0" Grid.Row="2" 
+                  ItemsSource="{Binding}" 
+                  IsSynchronizedWithCurrentItem="True" 
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="False"
+                 CurrentCellChanged="CustumersGrid_CurrentCellChanged"
+                  CellEditEnding="CustumersGrid_CellEditEnding">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="id" Binding="{Binding id}" Header="ID" IsReadOnly="True"/>
-                <DataGridTextColumn x:Name="email" Binding="{Binding email}" Header="EMAIL" IsReadOnly="False"/>
-                <DataGridTextColumn x:Name="productId" Binding="{Binding productId}" Header="Product ID" IsReadOnly="False"/>
-                <DataGridTextColumn x:Name="productDescription" Binding="{Binding productDescription}" Header="Product Description" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="id" 
+                                    Binding="{Binding id}" 
+                                    Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="lastName" 
+                                    Binding="{Binding lastName}" 
+                                    Header="Last Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="firstName" 
+                                    Binding="{Binding firstName}" 
+                                    Header="First Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="middleName" 
+                                    Binding="{Binding middleName}"
+                                    Header="Middle Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="phone" 
+                                    Binding="{Binding phone}"
+                                    Header="Phone" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="emailc" 
+                                    Binding="{Binding email}"
+                                    Header="Email" IsReadOnly="False"/>
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete record" Click="CustumersDeleteMenu_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
-        <Button Content="Connect to Access" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" 
-                VerticalAlignment="Center" Height="78" Width="150" Click="Button_Click"/>
+        <DataGrid x:Name="OrdersGrid"  Grid.Column="1"
+                  Grid.Row="2" ItemsSource="{Binding}"
+                  IsSynchronizedWithCurrentItem="True" 
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="False"
+                 CurrentCellChanged="OrdersGrid_CurrentCellChanged"
+                  CellEditEnding="OrdersGrid_CellEditEnding">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="idC" 
+                                    Binding="{Binding id}" 
+                                    Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="emailC" 
+                                    Binding="{Binding email}" 
+                                    Header="EMAIL" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productIdC" 
+                                    Binding="{Binding productId}" 
+                                    Header="Product ID" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productDescriptionC" 
+                                    Binding="{Binding productDescription}"
+                                    Header="Product Description" IsReadOnly="False"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete record" Click="DeleteMenu_Click"/>
 
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            
+        </DataGrid>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <Button Content="Connect to Access" HorizontalAlignment="Center" 
+                VerticalAlignment="Center" Height="78" Width="150" Click="Button_Click"/>
+            <Button Content="ADD new Order" x:Name="btnUpdateOleDB" Click="btnUpdateOleDB_Click"
+                    Height="77" Width="130"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="0">
+            <Button x:Name="mssqlConButton" Content="Connect to MSSQL" Click ="mssqlConButton_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
