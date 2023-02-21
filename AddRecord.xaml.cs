@@ -25,14 +25,14 @@ namespace ADO_WPF_HomeWork_app
         DataRow OleDbDR =null;
         DataRow MSSQLDR = null;
         bool isMSSQL, isOleDB,isComplete = false;
-        
+        int id;
         public AddRecord()
         {
             InitializeComponent();
             CustumerPanel.Visibility = Visibility.Collapsed;
             OrdersPanel.Visibility = Visibility.Collapsed;
         }
-        public AddRecord(DataRow dr):this()
+        public AddRecord(DataRow dr,int id):this()
         {
             
             switch (dr.Table.Columns.Count)
@@ -40,12 +40,14 @@ namespace ADO_WPF_HomeWork_app
                 case 4:
                     this.OleDbDR = dr;
                     OrdersPanel.Visibility =  Visibility.Visible;
-                    
+                    this.id = ++id;
+                    orderId.Text = id.ToString();
                     isOleDB = true;
                     break;
                 case 6:
                     this.MSSQLDR = dr;
-                    
+                    this.id = ++id;
+                    custumerId.Text = id.ToString();
                     CustumerPanel.Visibility = Visibility.Visible;
                     isMSSQL = true;
                     break;
@@ -59,7 +61,7 @@ namespace ADO_WPF_HomeWork_app
             
             if (CheckOleDBboxes()&&isComplete)
             {
-                OleDbDR["id"] = "150";
+                OleDbDR["id"] = $"{id}";
                 OleDbDR["email"] = emailTxt.Text;
                 OleDbDR["productId"] = productIdTxt.Text;
                 OleDbDR["productDescription"] = productDescTxt.Text;
@@ -67,7 +69,7 @@ namespace ADO_WPF_HomeWork_app
             }
             if (CheckMSSQLDBboxes()&&isComplete)
             {
-                MSSQLDR["id"] = "150";
+                MSSQLDR["id"] = $"{id}";
                 MSSQLDR["lastName"] = lastNameTxt.Text;
                 MSSQLDR["firstName"] = firstNameTxt.Text;
                 MSSQLDR["middleName"] = midleNameTxt.Text;

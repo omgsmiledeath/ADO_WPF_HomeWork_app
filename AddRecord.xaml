@@ -18,7 +18,7 @@
         <StackPanel Grid.Column="1">
             <StackPanel VerticalAlignment="Center" x:Name="OrdersPanel">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="ID"/>
+                    <TextBlock Text="ID" x:Name="orderId"/>
                     <TextBlock x:Name="idTxt"/>
                 </StackPanel>
                 <TextBlock Text="EMAIL"/>
@@ -30,7 +30,7 @@
             </StackPanel>
             <StackPanel  VerticalAlignment="Center" x:Name="CustumerPanel">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="ID"/>
+                    <TextBlock Text="ID" x:Name="custumerId"/>
                     <TextBlock x:Name="idTxt2"/>
                 </StackPanel>
                 <TextBlock Text="Last Name"/>

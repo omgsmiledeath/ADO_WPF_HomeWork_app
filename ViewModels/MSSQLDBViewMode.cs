@@ -38,10 +38,11 @@ namespace ADO_WPF_HomeWork_app.ViewModels
                    MSSQLAdapter =  await Task.Run(SqlDataAdapter () =>
                     {
                         MSSQLCon.Open();
-                        isConnectedToSql = true;
+                        
                         var Adapter = new SqlDataAdapter(@"SELECT * FROM Custumers;", MSSQLCon);
                         return Adapter;
                     });
+                    isConnectedToSql = true;
                     SetCommands(MSSQLCon);
                     MSSQLAdapter.Fill(CustumersDt);
 
@@ -60,7 +61,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
             var sql ="SELECT * FROM Custumers";
             MSSQLAdapter.SelectCommand = new SqlCommand(sql, con);
             //INSERT
-            sql = @"INSERT INTO Custumers (lastName,firstName,middleName,phone,email) VALUES (@lastname,@firstName,@middleName,@phone,@email);";
+            sql = @"INSERT INTO Custumers (lastName,firstName,middleName,phone,email) VALUES (@lastname,@firstName,@middleName,@phone,@email) SET @id=@@IDENTITY";
             MSSQLAdapter.InsertCommand = new SqlCommand(sql, con);
             MSSQLAdapter.InsertCommand.Parameters.Add("@id",SqlDbType.Int,4,"id").Direction=ParameterDirection.Output;
             MSSQLAdapter.InsertCommand.Parameters.Add("@lastName", SqlDbType.NVarChar, 20, "lastName");

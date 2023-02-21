@@ -19,10 +19,10 @@
             <RowDefinition Height="149*"></RowDefinition>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Grid.Column="0">
-            <MenuItem Header="Add Custumer" Click="AddButton_Click" x:Name="custumerAddMI"></MenuItem>
+            <MenuItem Header="Add Custumer" Click="AddCustumerButton_Click" x:Name="custumerAddMI"></MenuItem>
         </Menu>
         <Menu Grid.Row="0" Grid.Column="1">
-            <MenuItem Header="Add Order" Click="AddButton_Click" x:Name="orderAddMI"></MenuItem>
+            <MenuItem Header="Add Order" Click="orderAddMI_Click" x:Name="orderAddMI"></MenuItem>
         </Menu>
         <Label Content="CUSTUMERS" Grid.Row="1" Grid.Column="0"
                HorizontalAlignment="Center" />

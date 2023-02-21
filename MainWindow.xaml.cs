@@ -41,34 +41,49 @@ namespace ADO_WPF_HomeWork_app
             CustumersGrid.DataContext = mssqlDBVM.CustumersDt;
         }
 
-       
+
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await Dispatcher.InvokeAsync(()=> oleDBVM.ConnectToAccess(""));
+            await Dispatcher.InvokeAsync(() => oleDBVM.ConnectToAccess(""));
         }
 
-        
-            private void AddButton_Click(object sender, RoutedEventArgs e)
+
+        private void AddCustumerButton_Click(object sender, RoutedEventArgs e)
         {
+            int id;
             DataRow dr;
-            if ((sender as MenuItem).Name == "custumerAddMI") 
-            dr = mssqlDBVM.CustumersDt.NewRow();
-            else 
-            dr = oleDBVM.OrdersDt.NewRow();
-            AddRecord ar = new AddRecord(dr);
-            ar.ShowDialog();
-            if (ar.DialogResult == true && ((sender as MenuItem).Name == "custumerAddMI"))
+            if (mssqlDBVM.IsConnectedToSql)
             {
-                mssqlDBVM.CustumersDt.Rows.Add(dr);
+                dr = mssqlDBVM.CustumersDt.NewRow();
+                id = (int)mssqlDBVM.CustumersDt.Rows[mssqlDBVM.CustumersDt.Rows.Count - 1]["id"];
+                AddRecord ar = new AddRecord(dr,id);
+                ar.ShowDialog();
+                if (ar.DialogResult == true)
+                {
+                    mssqlDBVM.CustumersDt.Rows.Add(dr);
+                    mssqlDBVM.Update();
+                }   
             }
-            if (ar.DialogResult == true && ((sender as MenuItem).Name == "orderAddMI")) 
-            {
-                oleDBVM.OrdersDt.Rows.Add(dr);
-            }
-            mssqlDBVM.Update();
         }
 
+        private void orderAddMI_Click(object sender, RoutedEventArgs e)
+        {
+            if (oleDBVM.IsConnectedToAccess)
+            {
+                int id;
+                DataRow dr;
+                dr = oleDBVM.OrdersDt.NewRow();
+                id = (int)oleDBVM.OrdersDt.Rows[oleDBVM.OrdersDt.Rows.Count - 1]["id"];
+                AddRecord ar = new AddRecord(dr, id);
+                ar.ShowDialog();
+                if (ar.DialogResult == true)
+                {
+                    oleDBVM.OrdersDt.Rows.Add(dr);
+                    oleDBVM.Update();
+                }
+            }
+        }
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
             if (OrdersGrid.SelectedItem != null)
@@ -137,5 +152,7 @@ namespace ADO_WPF_HomeWork_app
             };
            await Dispatcher.InvokeAsync(()=>mssqlDBVM.ConnectToSQL(conStr.ConnectionString));
         }
+
+        
     }
 }
