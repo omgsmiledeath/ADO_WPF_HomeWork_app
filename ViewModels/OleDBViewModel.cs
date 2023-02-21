@@ -25,7 +25,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public async Task<bool> ConnectToAccess(string path)
+        public async Task ConnectToAccess(string path)
         {
             var OleDBStringBuilder = new OleDbConnectionStringBuilder();
             OleDBStringBuilder.DataSource = @"D:\OrdersBase.accdb;DataBase Password = '123'";
@@ -33,7 +33,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
             oleDbCon.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source = D:\\OrdersBase.accdb; Jet OLEDB:DataBase Password = '123'";
             try
             {
-                await oleDbCon.OpenAsync();
+                await Task.Run(() =>oleDbCon.OpenAsync());
                 if (oleDbCon.State == ConnectionState.Open)
                 {
                     MessageBox.Show("Connection to Access base is ok");
@@ -54,7 +54,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
                 MessageBox.Show($"{ex.Message}", "ERROR");
                 isConnectedToAccess = false;
             }
-            return isConnectedToAccess;
+            
         }
         void SetCommands(OleDbConnection oleDbCon)
         {

@@ -17,6 +17,7 @@ using System.Data.OleDb;
 using System.Data;
 using System.Runtime.CompilerServices;
 using ADO_WPF_HomeWork_app.ViewModels;
+using System.Windows.Threading;
 
 namespace ADO_WPF_HomeWork_app
 {
@@ -44,28 +45,26 @@ namespace ADO_WPF_HomeWork_app
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await oleDBVM.ConnectToAccess("");
+            await Dispatcher.InvokeAsync(()=> oleDBVM.ConnectToAccess(""));
         }
 
-        private void btnUpdateOleDB_Click(object sender, RoutedEventArgs e)
+        
+            private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var dr = oleDBVM.OrdersDt.NewRow();
+            DataRow dr;
+            if ((sender as MenuItem).Name == "custumerAddMI") 
+            dr = mssqlDBVM.CustumersDt.NewRow();
+            else 
+            dr = oleDBVM.OrdersDt.NewRow();
             AddRecord ar = new AddRecord(dr);
             ar.ShowDialog();
-            if (ar.DialogResult == true)
-            {
-                oleDBVM.OrdersDt.Rows.Add(dr);
-            }
-            oleDBVM.Update();
-        }
-            private void mssqlAddButton_Click(object sender, RoutedEventArgs e)
-        {
-            var dr = mssqlDBVM.CustumersDt.NewRow();
-            AddRecord ar = new AddRecord(dr);
-            ar.ShowDialog();
-            if (ar.DialogResult == true)
+            if (ar.DialogResult == true && ((sender as MenuItem).Name == "custumerAddMI"))
             {
                 mssqlDBVM.CustumersDt.Rows.Add(dr);
+            }
+            if (ar.DialogResult == true && ((sender as MenuItem).Name == "orderAddMI")) 
+            {
+                oleDBVM.OrdersDt.Rows.Add(dr);
             }
             mssqlDBVM.Update();
         }
@@ -136,7 +135,7 @@ namespace ADO_WPF_HomeWork_app
                 InitialCatalog = "ADO_WPF_HomeWork_base",
                 IntegratedSecurity= true
             };
-            await mssqlDBVM.ConnectToSQL(conStr.ConnectionString);
+           await Dispatcher.InvokeAsync(()=>mssqlDBVM.ConnectToSQL(conStr.ConnectionString));
         }
     }
 }

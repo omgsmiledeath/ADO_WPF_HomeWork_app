@@ -47,6 +47,7 @@
         </StackPanel>
         <StackPanel Grid.Column="0" VerticalAlignment="Center">
             <Button x:Name="AddButton" Content="ADD" Click="AddButton_Click"/>
+            <Button x:Name="Exit" Content="Exit" Click="Exit_Click"/>
         </StackPanel>
     </Grid>
 </Window>

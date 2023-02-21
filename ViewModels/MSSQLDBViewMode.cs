@@ -31,12 +31,17 @@ namespace ADO_WPF_HomeWork_app.ViewModels
         {
             if (!IsConnectedToSql)
             {
+                
                 MSSQLCon.ConnectionString = conStr;
                 try
                 {
-                    await MSSQLCon.OpenAsync();
-                    isConnectedToSql = true;
-                    MSSQLAdapter = new SqlDataAdapter(@"SELECT * FROM Custumers;", MSSQLCon);
+                   MSSQLAdapter =  await Task.Run(SqlDataAdapter () =>
+                    {
+                        MSSQLCon.Open();
+                        isConnectedToSql = true;
+                        var Adapter = new SqlDataAdapter(@"SELECT * FROM Custumers;", MSSQLCon);
+                        return Adapter;
+                    });
                     SetCommands(MSSQLCon);
                     MSSQLAdapter.Fill(CustumersDt);
 
@@ -50,6 +55,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
 
         private void SetCommands(SqlConnection con)
         {
+
             //SELECT
             var sql ="SELECT * FROM Custumers";
             MSSQLAdapter.SelectCommand = new SqlCommand(sql, con);

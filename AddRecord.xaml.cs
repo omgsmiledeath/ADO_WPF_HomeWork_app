@@ -24,7 +24,7 @@ namespace ADO_WPF_HomeWork_app
     {
         DataRow OleDbDR =null;
         DataRow MSSQLDR = null;
-        bool isMSSQL, isOleDB = false;
+        bool isMSSQL, isOleDB,isComplete = false;
         
         public AddRecord()
         {
@@ -57,7 +57,7 @@ namespace ADO_WPF_HomeWork_app
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             
-            if (CheckOleDBboxes())
+            if (CheckOleDBboxes()&&isComplete)
             {
                 OleDbDR["id"] = "150";
                 OleDbDR["email"] = emailTxt.Text;
@@ -65,7 +65,7 @@ namespace ADO_WPF_HomeWork_app
                 OleDbDR["productDescription"] = productDescTxt.Text;
                 this.DialogResult = true;
             }
-            if (CheckMSSQLDBboxes())
+            if (CheckMSSQLDBboxes()&&isComplete)
             {
                 MSSQLDR["id"] = "150";
                 MSSQLDR["lastName"] = lastNameTxt.Text;
@@ -75,9 +75,13 @@ namespace ADO_WPF_HomeWork_app
                 MSSQLDR["email"] = emailTxt2.Text;
                 this.DialogResult = true;
             }
-            else this.DialogResult= false;
         }
-            
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult=false;
+        }
+
         private bool CheckOleDBboxes()
         {
             if (!isOleDB) return false;
@@ -88,14 +92,17 @@ namespace ADO_WPF_HomeWork_app
                     if (!Char.IsDigit(c))
                     {
                         MessageBox.Show("Product ID only numbers");
-                        break;
+                        isComplete= false;
+                        return false;
                     }
                 }
+                isComplete= true;
                 return true;
             }
                 else
                 {
                     MessageBox.Show("Enter all fields");
+                    isComplete= false;
                     return false;
                 }
         }
@@ -107,11 +114,13 @@ namespace ADO_WPF_HomeWork_app
                 !String.IsNullOrWhiteSpace(midleNameTxt.Text)&&
                 !String.IsNullOrWhiteSpace(emailTxt2.Text))
             {
+                isComplete = true;
                 return true;
             }
             else
             {
-                MessageBox.Show("Enter all fields");
+                MessageBox.Show("Enter all fields '\n'*Phone can be empty!");
+                isComplete= false;
                 return false;
             }
         }

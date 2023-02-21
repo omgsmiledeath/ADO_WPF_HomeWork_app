@@ -18,10 +18,16 @@
             <RowDefinition Height="271*"></RowDefinition>
             <RowDefinition Height="149*"></RowDefinition>
         </Grid.RowDefinitions>
-
-        <Label Content="БАЗА 1" Grid.Row="2"
-               HorizontalAlignment="Center" 
-               Margin="0,1,0,212" Width="48" />
+        <Menu Grid.Row="0" Grid.Column="0">
+            <MenuItem Header="Add Custumer" Click="AddButton_Click" x:Name="custumerAddMI"></MenuItem>
+        </Menu>
+        <Menu Grid.Row="0" Grid.Column="1">
+            <MenuItem Header="Add Order" Click="AddButton_Click" x:Name="orderAddMI"></MenuItem>
+        </Menu>
+        <Label Content="CUSTUMERS" Grid.Row="1" Grid.Column="0"
+               HorizontalAlignment="Center" />
+        <Label Content="ORDERS" Grid.Row="1" Grid.Column="1"
+               HorizontalAlignment="Center" />
         <DataGrid x:Name="CustumersGrid" 
                   Grid.Column="0" Grid.Row="2" 
                   ItemsSource="{Binding}" 
@@ -90,12 +96,11 @@
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Button Content="Connect to Access" HorizontalAlignment="Center" 
                 VerticalAlignment="Center" Height="78" Width="150" Click="Button_Click"/>
-            <Button Content="ADD new Order" x:Name="btnUpdateOleDB" Click="btnUpdateOleDB_Click"
-                    Height="77" Width="130"/>
+            
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0">
             <Button x:Name="mssqlConButton" Content="Connect to MSSQL" Click ="mssqlConButton_Click"/>
-            <Button x:Name="mssqlAddButton" Content="ADD new Custumer" Click="mssqlAddButton_Click"/>
+            
         </StackPanel>
     </Grid>
 </Window>
