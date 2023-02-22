@@ -91,7 +91,7 @@ namespace ADO_WPF_HomeWork_app
                     if (oleDBVM.IsConnectedToAccess)
                     {
                         OleDbEllipse.Fill = new SolidColorBrush() { Color = Colors.Green };
-                        OleDBConStateBlock.Text = $"Connection Open! '\n'{t.Result}";
+                        OleDBConStateBlock.Text = $"{t.Result}";
                     }
                     else
                     {

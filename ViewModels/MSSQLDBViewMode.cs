@@ -27,31 +27,38 @@ namespace ADO_WPF_HomeWork_app.ViewModels
         private SqlDataAdapter MSSQLAdapter = new SqlDataAdapter();
         private SqlConnection MSSQLCon = new SqlConnection();
 
-        public async Task ConnectToSQL (string conStr)
+        public async Task<string> ConnectToSQL (string conStr)
         {
             if (!IsConnectedToSql)
             {
-                
+
                 MSSQLCon.ConnectionString = conStr;
                 try
                 {
-                   MSSQLAdapter =  await Task.Run(SqlDataAdapter () =>
-                    {
-                        MSSQLCon.Open();
-                        
-                        var Adapter = new SqlDataAdapter(@"SELECT * FROM Custumers;", MSSQLCon);
-                        return Adapter;
-                    });
-                    isConnectedToSql = true;
+                    await MSSQLCon.OpenAsync();
                     SetCommands(MSSQLCon);
                     MSSQLAdapter.Fill(CustumersDt);
+                    return Task.Run(string () =>
+                    {
+                        if (MSSQLCon.State == ConnectionState.Open)
+                        {
+                            isConnectedToSql = true;
 
+                            return "Connection to Access base is ok";
+                        }
+                        else
+                        {
+                            isConnectedToSql = false;
+                            return "Connection to Access base its not ok";
+                        }
+                    }).Result;
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message, "error");
+                    return e.Message;
                 }
             }
+            else return "Alredy connected";
         }
 
         private void SetCommands(SqlConnection con)
