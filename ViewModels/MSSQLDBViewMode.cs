@@ -31,7 +31,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
         {
             if (!IsConnectedToSql)
             {
-
+                if(MSSQLCon.State== ConnectionState.Connecting) { return "Connecting..."; };
                 MSSQLCon.ConnectionString = conStr;
                 try
                 {

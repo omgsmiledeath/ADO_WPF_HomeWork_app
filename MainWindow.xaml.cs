@@ -141,13 +141,10 @@ namespace ADO_WPF_HomeWork_app
             }
             else MessageBox.Show("Select row for delete");
         }
-
-        private void mssqlConButton_Click(object sender, RoutedEventArgs e)
+        private void menuSettingsClick(object sender, RoutedEventArgs e)
         {
-            var settings = new Settings(mssqlDBVM,oleDBVM);
+            var settings = new Settings(mssqlDBVM, oleDBVM);
             settings.ShowDialog();
         }
-
-        
     }
 }

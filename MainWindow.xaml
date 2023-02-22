@@ -16,14 +16,19 @@
             <RowDefinition Height="26*"></RowDefinition>
             <RowDefinition Height="31"></RowDefinition>
             <RowDefinition Height="271*"></RowDefinition>
-            <RowDefinition Height="149*"></RowDefinition>
+            
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Grid.Column="0">
             <MenuItem Header="Add Custumer" Click="AddCustumerButton_Click" x:Name="custumerAddMI"></MenuItem>
         </Menu>
-        <Menu Grid.Row="0" Grid.Column="1">
+        
+            <Menu Grid.Row="0" Grid.Column="1" >
             <MenuItem Header="Add Order" Click="orderAddMI_Click" x:Name="orderAddMI"></MenuItem>
-        </Menu>
+                <MenuItem Header="Settings" Click="menuSettingsClick" />
+            </Menu>
+            
+            
+            
         <Label Content="CUSTUMERS" Grid.Row="1" Grid.Column="0"
                HorizontalAlignment="Center" />
         <Label Content="ORDERS" Grid.Row="1" Grid.Column="1"
@@ -94,12 +99,7 @@
             
         </DataGrid>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
-            
-            
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="0">
-            <Button x:Name="mssqlConButton" Content="Connect to MSSQL" Click ="mssqlConButton_Click"/>
-            
-        </StackPanel>
+        
     </Grid>
 </Window>

@@ -28,7 +28,7 @@ namespace ADO_WPF_HomeWork_app.ViewModels
         public async Task<string> ConnectToAccess(string conStr)
         {
             var OleDBStringBuilder = new OleDbConnectionStringBuilder();
-            
+            if(oleDbCon.State ==ConnectionState.Connecting) { return "Connecting..."; }
             oleDbCon.ConnectionString = conStr;
             try
             {

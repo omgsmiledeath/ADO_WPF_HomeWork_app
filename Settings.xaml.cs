@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace ADO_WPF_HomeWork_app
 {
@@ -25,6 +27,7 @@ namespace ADO_WPF_HomeWork_app
         MSSQLDBViewMode mssqlDBVM;
         OleDBViewModel oleDBVM;
         SecurityBot sb;
+        SettingsSave ss = new SettingsSave();
         public Settings()
         {
             InitializeComponent();
@@ -34,19 +37,30 @@ namespace ADO_WPF_HomeWork_app
             this.mssqlDBVM= mssqlDBVM;
             this.oleDBVM= oleDBVM;
             sb = new SecurityBot();
+            MSSQLPanel.Visibility = Visibility.Collapsed;
+            OleDBPanel.Visibility = Visibility.Collapsed;
         }
 
-        private void loginButton_Click(object sender, RoutedEventArgs e)
+        private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(loginTxt.Text) && !string.IsNullOrWhiteSpace(passTxt.Text))
             {
                 if (sb.TryToLogin(loginTxt.Text, passTxt.Text))
                 {
-                    MessageBox.Show("Successfully");
-                    this.DialogResult = true;
-                    AuthenticationPanel.Visibility = Visibility.Collapsed;
-                    MSSQLPanel.Visibility = Visibility.Visible;
-                    OleDBPanel.Visibility = Visibility.Visible;
+                            MessageBox.Show("Successfully");
+                            
+                            AuthenticationPanel.Visibility = Visibility.Collapsed;
+                            MSSQLPanel.Visibility = Visibility.Visible;
+                            OleDBPanel.Visibility = Visibility.Visible;
+                    if(File.Exists("Settings.json"))
+                    using (var sr = new StreamReader("Settings.json"))
+                    {
+                        var json = sr.ReadToEnd();
+                        if(!string.IsNullOrEmpty(json))
+                        ss =JsonConvert.DeserializeObject<SettingsSave>(json);
+                            mssqlConStr.Text = ss.MssqlConStr;
+                            oleDBConStr.Text = ss.OledbConStr;
+                    }
                 }
                 else MessageBox.Show("Wrong Lorin or Password");
             }
@@ -65,15 +79,16 @@ namespace ADO_WPF_HomeWork_app
                     //InitialCatalog = "ADO_WPF_HomeWork_base",
                     IntegratedSecurity = true
                 };
-                await Dispatcher.InvokeAsync(() => mssqlDBVM.ConnectToSQL(conStr.ConnectionString));
+               var t =  await Dispatcher.InvokeAsync(() => mssqlDBVM.ConnectToSQL(conStr.ConnectionString)).Result;
                 if (mssqlDBVM.IsConnectedToSql)
                 {
                     MssqlEllipse.Fill = new SolidColorBrush() { Color = Colors.Green };
-                    MssqlConStateBlock.Text = "Connection Open!";
+                    MssqlConStateBlock.Text = t;
+                    ss.MssqlConStr = conStr.ConnectionString;  
                 }
                 else
                 {
-                    MessageBox.Show("Connection not opened '\n'Check Data Source");
+                    MessageBox.Show($"{t}");
                 }
             }
             else MessageBox.Show("Enter Data Source and Initial Catalog");
@@ -92,6 +107,7 @@ namespace ADO_WPF_HomeWork_app
                     {
                         OleDbEllipse.Fill = new SolidColorBrush() { Color = Colors.Green };
                         OleDBConStateBlock.Text = $"{t.Result}";
+                        ss.OledbConStr = conStr;
                     }
                     else
                     {
@@ -99,6 +115,19 @@ namespace ADO_WPF_HomeWork_app
                     }                  
             }
             else MessageBox.Show("Enter data path");
+        }
+
+        private void SaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ss.MssqlConStr) && !string.IsNullOrEmpty(ss.OledbConStr))
+            {
+                var ser = new JsonSerializer();
+                using (var sw = new StreamWriter("settings.json"))
+                using (JsonWriter jw = new JsonTextWriter(sw))
+                {
+                    ser.Serialize(jw, ss);
+                }
+            }
         }
     }
 }
