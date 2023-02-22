@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace ADO_WPF_HomeWork_app.ViewModels
 {
-    internal class OleDBViewModel : INotifyPropertyChanged
+    public class OleDBViewModel : INotifyPropertyChanged
     {
         private OleDbDataAdapter OleDbAdapter = new OleDbDataAdapter();
         private OleDbConnection oleDbCon = new OleDbConnection();
@@ -25,34 +25,36 @@ namespace ADO_WPF_HomeWork_app.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public async Task ConnectToAccess(string path)
+        public async Task<string> ConnectToAccess(string conStr)
         {
             var OleDBStringBuilder = new OleDbConnectionStringBuilder();
-            OleDBStringBuilder.DataSource = @"D:\OrdersBase.accdb;DataBase Password = '123'";
-            OleDBStringBuilder.Provider = "Microsoft.ACE.OLEDB.12.0";
-            oleDbCon.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source = D:\\OrdersBase.accdb; Jet OLEDB:DataBase Password = '123'";
+            
+            oleDbCon.ConnectionString = conStr;
             try
             {
-                await Task.Run(() =>oleDbCon.OpenAsync());
-                if (oleDbCon.State == ConnectionState.Open)
-                {
-                    MessageBox.Show("Connection to Access base is ok");
-                    isConnectedToAccess = true;
-                    
-                    
-                    SetCommands(oleDbCon);
-                    OleDbAdapter.Fill(OrdersDt);
-                }
-                else
-                {
-                    MessageBox.Show("Connection to Access base its not ok");
-                    isConnectedToAccess = false;
-                }
+                await oleDbCon.OpenAsync();
+                SetCommands(oleDbCon);
+                OleDbAdapter.Fill(OrdersDt);
+                return Task.Run( string () => {
+                   
+                    if (oleDbCon.State == ConnectionState.Open)
+                    { 
+                        isConnectedToAccess = true;
+                        
+                        return "Connection to Access base is ok";
+                    }
+                    else
+                    {
+                        isConnectedToAccess = false;
+                        return "Connection to Access base its not ok";
+                    }
+                }).Result;
+                
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.Message}", "ERROR");
                 isConnectedToAccess = false;
+                return ex.Message;
             }
             
         }

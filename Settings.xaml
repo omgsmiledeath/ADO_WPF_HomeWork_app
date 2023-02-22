@@ -16,26 +16,50 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <!--#region Authentication-->
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" Orientation="Horizontal"
+                    x:Name="AuthenticationPanel">
             <TextBlock Text="Autentification" VerticalAlignment="Center" Margin="10 0 30 0"/>
             <StackPanel Margin="10">
                 <TextBlock Text="Login" Margin="0 0 0 5"/>
                 <TextBlock Text="Password"/>
             </StackPanel>
             <StackPanel Margin="10">
-                <TextBox Text="" Width="208"/>
-                <TextBox Text=""/>
+                <TextBox x:Name="loginTxt" Text="" Width="208"/>
+                <TextBox x:Name="passTxt" Text=""/>
             </StackPanel>
             <Button x:Name="loginButton" Content="Enter" Width="80" Margin="0 10 10 10" Click="loginButton_Click"/>
         </StackPanel>
         <!--#endregion-->
         <!--#region MSSQL-->
-        <StackPanel Grid.Row="1" Grid.Column="0">
+        <StackPanel Grid.Row="1" Grid.Column="0"
+                    x:Name="MSSQLPanel">
             <TextBlock Text="Enter Data Source"/>
-            <TextBox/>
+            <TextBox x:Name="dataSourceTxt" Margin="5"/>
             <TextBlock Text="Enter Initial Catalog"/>
-            <TextBox/>
-            <Button Content="Try to Connect"/>
+            <TextBox x:Name="initialCatTxt" Margin="5"/>
+            <StackPanel Margin="30 10 0 0"  Orientation="Horizontal">
+                <Button x:Name="msqlConButton" Click="msqlConButton_Click" Content="Try to Connect"  VerticalAlignment="Center" />
+                <Ellipse Width="20" Height="20" Fill="Red" x:Name="MssqlEllipse"
+                         VerticalAlignment="Center" HorizontalAlignment="Right" Margin="90 0 10 0"/>
+                <TextBlock Text="Connection Close" x:Name="MssqlConStateBlock"
+                           FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 10 0"/>
+            </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region OleDBPanel-->
+        <StackPanel x:Name="OleDBPanel" Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Path to Access File"/>
+            <TextBox x:Name="accessPathBox" Margin="5"/>
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Left" Content="Try To Connect" 
+                    x:Name="oleDBButton" Click="oleDBButton_Click" 
+                    Width="80" Height="20" Margin="10 20 0 0"/>
+                <Ellipse Width="20" Height="20" Fill="Red" x:Name="OleDbEllipse"
+                         VerticalAlignment="Center" HorizontalAlignment="Right" Margin="90 20 10 0"/>
+                <TextBlock Text="Connection Close" FontSize="10" x:Name="OleDBConStateBlock"
+                           VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 20 10 0"/>
+            </StackPanel>
         </StackPanel>
         <!--#endregion-->
     </Grid>

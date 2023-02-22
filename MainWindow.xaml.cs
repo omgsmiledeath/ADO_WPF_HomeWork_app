@@ -43,9 +43,9 @@ namespace ADO_WPF_HomeWork_app
 
 
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            await Dispatcher.InvokeAsync(() => oleDBVM.ConnectToAccess(""));
+           
         }
 
 
@@ -142,15 +142,10 @@ namespace ADO_WPF_HomeWork_app
             else MessageBox.Show("Select row for delete");
         }
 
-        private async void mssqlConButton_Click(object sender, RoutedEventArgs e)
+        private void mssqlConButton_Click(object sender, RoutedEventArgs e)
         {
-            var conStr = new SqlConnectionStringBuilder()
-            {
-                DataSource = @"(localdb)\MSSQLLocalDB",
-                InitialCatalog = "ADO_WPF_HomeWork_base",
-                IntegratedSecurity= true
-            };
-           await Dispatcher.InvokeAsync(()=>mssqlDBVM.ConnectToSQL(conStr.ConnectionString));
+            var settings = new Settings(mssqlDBVM,oleDBVM);
+            settings.ShowDialog();
         }
 
         

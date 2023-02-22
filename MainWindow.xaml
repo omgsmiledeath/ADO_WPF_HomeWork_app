@@ -94,8 +94,7 @@
             
         </DataGrid>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
-            <Button Content="Connect to Access" HorizontalAlignment="Center" 
-                VerticalAlignment="Center" Height="78" Width="150" Click="Button_Click"/>
+            
             
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0">
