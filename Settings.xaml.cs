@@ -58,8 +58,9 @@ namespace ADO_WPF_HomeWork_app
                         var json = sr.ReadToEnd();
                         if(!string.IsNullOrEmpty(json))
                         ss =JsonConvert.DeserializeObject<SettingsSave>(json);
-                            mssqlConStr.Text = ss.MssqlConStr;
-                            oleDBConStr.Text = ss.OledbConStr;
+                            dataSourceTxt.Text = ss.MssqlDataSource;
+                            initialCatTxt.Text = ss.MssqlInitialCatalog;
+                            accessPathBox.Text = ss.OledbDataSource;
                     }
                 }
                 else MessageBox.Show("Wrong Lorin or Password");
@@ -73,18 +74,20 @@ namespace ADO_WPF_HomeWork_app
             {
                 var conStr = new SqlConnectionStringBuilder()
                 {
-                    //DataSource = @"(localdb)\MSSQLLocalDB",
+                    
                     DataSource = dataSourceTxt.Text,
                     InitialCatalog = initialCatTxt.Text,
-                    //InitialCatalog = "ADO_WPF_HomeWork_base",
+                   
                     IntegratedSecurity = true
                 };
+                mssqlConStr.Text = conStr.ConnectionString;
                var t =  await Dispatcher.InvokeAsync(() => mssqlDBVM.ConnectToSQL(conStr.ConnectionString)).Result;
                 if (mssqlDBVM.IsConnectedToSql)
                 {
                     MssqlEllipse.Fill = new SolidColorBrush() { Color = Colors.Green };
                     MssqlConStateBlock.Text = t;
-                    ss.MssqlConStr = conStr.ConnectionString;  
+                    ss.MssqlDataSource = dataSourceTxt.Text; 
+                    ss.MssqlInitialCatalog= initialCatTxt.Text;
                 }
                 else
                 {
@@ -96,30 +99,35 @@ namespace ADO_WPF_HomeWork_app
 
         private async void oleDBButton_Click(object sender, RoutedEventArgs e)
         {
-            var shecduler = TaskScheduler.FromCurrentSynchronizationContext();
-            if (!string.IsNullOrWhiteSpace(accessPathBox.Text))
+            if (!oleDBVM.IsConnectedToAccess)
             {
-                var conStr = @$"Provider=Microsoft.ACE.OLEDB.12.0; Data Source ={accessPathBox.Text}";
-                MessageBox.Show(conStr);
+                var shecduler = TaskScheduler.FromCurrentSynchronizationContext();
+                if (!string.IsNullOrWhiteSpace(accessPathBox.Text))
+                {
+                    var conStr = @$"Provider=Microsoft.ACE.OLEDB.12.0; Data Source ={accessPathBox.Text}";
+
+                    oleDBConStr.Text = conStr;
                     var t = Dispatcher.InvokeAsync(() => oleDBVM.ConnectToAccess(conStr)).Result;
 
                     if (oleDBVM.IsConnectedToAccess)
                     {
                         OleDbEllipse.Fill = new SolidColorBrush() { Color = Colors.Green };
                         OleDBConStateBlock.Text = $"{t.Result}";
-                        ss.OledbConStr = conStr;
+                        ss.OledbDataSource = accessPathBox.Text;
                     }
                     else
                     {
                         MessageBox.Show($"{t.Result}");
-                    }                  
+                    }
+                }
+                else MessageBox.Show("Enter data path");
             }
-            else MessageBox.Show("Enter data path");
+            else OleDBConStateBlock.Text = "Alredy connected!";
         }
 
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(ss.MssqlConStr) && !string.IsNullOrEmpty(ss.OledbConStr))
+            if (!string.IsNullOrEmpty(ss.MssqlDataSource) && !string.IsNullOrEmpty(ss.MssqlInitialCatalog)&&!string.IsNullOrEmpty(ss.OledbDataSource))
             {
                 var ser = new JsonSerializer();
                 using (var sw = new StreamWriter("settings.json"))
@@ -127,6 +135,7 @@ namespace ADO_WPF_HomeWork_app
                 {
                     ser.Serialize(jw, ss);
                 }
+                MessageBox.Show("Save settings done");
             }
         }
     }

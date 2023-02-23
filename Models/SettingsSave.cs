@@ -8,10 +8,12 @@ namespace ADO_WPF_HomeWork_app.Models
 {
     internal class SettingsSave
     {
-        [JsonProperty("MssqlConStr")]
-        public string MssqlConStr { get; set; } = string.Empty;
-        
-        [JsonProperty("OledbConStr")]
-        public string OledbConStr { get; set; } = string.Empty;
+        [JsonProperty("MssqlDataSource")]
+        public string MssqlDataSource { get; set; } = string.Empty;
+        [JsonProperty("MssqlInitialCatalog")]
+        public string MssqlInitialCatalog { get; set; } = string.Empty;
+
+        [JsonProperty("OledbDataSource")]
+        public string OledbDataSource { get; set; } = string.Empty;
     }
 }

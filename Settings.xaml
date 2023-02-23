@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ADO_WPF_HomeWork_app"
         mc:Ignorable="d"
-        Title="Settings" Height="318" Width="632">
+        Title="Settings" Height="380" Width="621">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -39,12 +39,12 @@
             <TextBox x:Name="dataSourceTxt" Margin="5"/>
             <TextBlock Text="Enter Initial Catalog"/>
             <TextBox x:Name="initialCatTxt" Margin="5"/>
-            <TextBlock Text="----Connection String----" x:Name="mssqlConStr"/>
+            <TextBlock Text="----Connection String----" x:Name="mssqlConStr" TextWrapping="Wrap" MaxWidth="150"/>
             <StackPanel Margin="30 10 0 0"  Orientation="Horizontal">
                 <Button x:Name="msqlConButton" Click="msqlConButton_Click" Content="Try to Connect"  VerticalAlignment="Center" />
                 <Ellipse Width="20" Height="20" Fill="Red" x:Name="MssqlEllipse"
                          VerticalAlignment="Center" HorizontalAlignment="Right" Margin="40 0 10 0"/>
-                <TextBlock Text="Connection Close" x:Name="MssqlConStateBlock" TextWrapping="Wrap"
+                <TextBlock Text="Connection Close" x:Name="MssqlConStateBlock" TextWrapping="Wrap" MaxWidth="90"
                            FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 10 0"/>
             </StackPanel>
         </StackPanel>
@@ -53,14 +53,14 @@
         <StackPanel x:Name="OleDBPanel" Grid.Row="1" Grid.Column="1">
             <TextBlock Text="Path to Access File"/>
             <TextBox x:Name="accessPathBox" Margin="5"/>
-            <TextBlock Text="----Connection String----" x:Name="oleDBConStr"/>
+            <TextBlock Text="----Connection String----" x:Name="oleDBConStr" TextWrapping="Wrap" MaxWidth="150"/>
             <StackPanel Orientation="Horizontal">
                 <Button HorizontalAlignment="Left" Content="Try To Connect" 
                     x:Name="oleDBButton" Click="oleDBButton_Click" 
                     Width="80" Height="20" Margin="10 20 0 0"/>
                 <Ellipse Width="20" Height="20" Fill="Red" x:Name="OleDbEllipse"
                          VerticalAlignment="Center" HorizontalAlignment="Right" Margin="40 20 10 0"/>
-                <TextBlock Text="Connection Close" FontSize="10" x:Name="OleDBConStateBlock"
+                <TextBlock Text="Connection Close" FontSize="10" x:Name="OleDBConStateBlock" TextWrapping="Wrap" MaxWidth="90"
                            VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 20 10 0"/>
             </StackPanel>
 
