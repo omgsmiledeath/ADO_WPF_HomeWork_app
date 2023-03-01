@@ -24,7 +24,7 @@ namespace ADO_WPF_HomeWork_app
     /// </summary>
     public partial class Settings : Window
     {
-        MSSQLDBViewMode mssqlDBVM;
+        MSSQLDBViewModel mssqlDBVM;
         OleDBViewModel oleDBVM;
         SecurityBot sb;
         SettingsSave ss = new SettingsSave();
@@ -32,7 +32,7 @@ namespace ADO_WPF_HomeWork_app
         {
             InitializeComponent();
         }
-        public Settings(MSSQLDBViewMode mssqlDBVM,OleDBViewModel oleDBVM) :this()
+        public Settings(MSSQLDBViewModel mssqlDBVM,OleDBViewModel oleDBVM) :this()
         {
             this.mssqlDBVM= mssqlDBVM;
             this.oleDBVM= oleDBVM;

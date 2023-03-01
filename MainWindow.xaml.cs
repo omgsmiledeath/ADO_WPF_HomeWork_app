@@ -29,7 +29,7 @@ namespace ADO_WPF_HomeWork_app
         #region Переменные
         DataRowView dr;
         OleDBViewModel oleDBVM;
-        MSSQLDBViewMode mssqlDBVM;
+        MSSQLDBViewModel mssqlDBVM;
         #endregion
 
         public MainWindow()
@@ -37,7 +37,7 @@ namespace ADO_WPF_HomeWork_app
             InitializeComponent();
             oleDBVM = new OleDBViewModel();
             OrdersGrid.DataContext = oleDBVM.OrdersDt;
-            mssqlDBVM = new MSSQLDBViewMode();
+            mssqlDBVM = new MSSQLDBViewModel();
             CustumersGrid.DataContext = mssqlDBVM.CustumersDt;
         }
 

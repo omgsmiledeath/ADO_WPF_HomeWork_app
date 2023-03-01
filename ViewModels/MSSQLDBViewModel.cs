@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace ADO_WPF_HomeWork_app.ViewModels
 {
-    public class MSSQLDBViewMode:INotifyPropertyChanged
+    public class MSSQLDBViewModel:INotifyPropertyChanged
     {
         bool isConnectedToSql;
         public bool IsConnectedToSql => isConnectedToSql;
